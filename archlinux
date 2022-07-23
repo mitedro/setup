@@ -1,0 +1,60 @@
+ls /sys/firmware/efi/efivars
+iwctl (device list, station wlan0 scan, station wlan0 get-networks, station wlan0 connect SSID)
+ping google.com
+timedatectl set-ntp true
+cfdisk /dev/nvme0n1
+mkfs.fat -F 32 /dev/nvme0n1p1
+mkfs.ext4 /dev/nvme0n1p2
+mount --mkdir /dev/nvme0n1p1 /mnt/boot
+mount /dev/nvme0n1p2 /mnt
+pacstrap /mnt base linux linux-firmware wpa_supplicant vim
+genfstab -U /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
+ln -sf /usr/share/zoneinfo/Europe/Istanbul /etc/localtime
+hwclock --systohc
+vim /etc/locale.gen
+locale-gen
+vim /etc/locale.conf (LANG=en_US.UTF-8)
+vim /etc/hostname
+vim /etc/hosts (127.0.0.1 localhost, ::1 localhost)
+mkinitcpio -P
+passwd
+pacman -S grub efibootmgr
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
+pacman -S intel-ucode
+exit
+umount -R /mnt
+reboot
+
+useradd -m alvera
+passwd alvera
+vim /etc/systemd/network/20-wired.network (
+  [Match]
+  Name=wlp0s20f3
+
+  [Network]
+  DHCP=yes
+)
+vim /etc/wpa_supplicant.conf (
+  network={
+    ssid="SSID"
+    psk="PASSWORD"
+)
+systemctl start systemd-networkd
+systemctl start systemd-resolved
+wpa_supplicant -B -c /etc/wpa_supplicant.conf -i wlp0s20f3
+
+xorg-server 
+xorg-xinit
+xorg-xbacklight
+xf86-video-intel 
+intel-media-driver
+i3-wm 
+alacritty
+pulseaudio 
+pulseaudio-bluetooth 
+bluez-utils 
+alsa-utils
+firefox
+iw
