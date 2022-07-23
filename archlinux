@@ -3,10 +3,10 @@ iwctl (device list, station wlan0 scan, station wlan0 get-networks, station wlan
 ping google.com
 timedatectl set-ntp true
 cfdisk /dev/nvme0n1
-mkfs.fat -F 32 /dev/nvme0n1p1
 mkfs.ext4 /dev/nvme0n1p2
-mount --mkdir /dev/nvme0n1p1 /mnt/boot
+mkfs.fat -F 32 /dev/nvme0n1p1
 mount /dev/nvme0n1p2 /mnt
+mount --mkdir /dev/nvme0n1p1 /mnt/boot
 pacstrap /mnt base linux linux-firmware wpa_supplicant vim
 genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
