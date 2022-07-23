@@ -50,6 +50,7 @@ xorg-xinit
 xorg-xbacklight
 xf86-video-intel 
 intel-media-driver
+vulkan-intel
 i3-wm 
 alacritty
 pulseaudio 
@@ -58,3 +59,6 @@ bluez-utils
 alsa-utils
 firefox
 iw
+noto-fonts
+ttf-droid
+neofetch
